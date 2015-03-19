@@ -9,11 +9,12 @@ from .models import Track
 
 def track_view(request,title):
     track = get_object_or_404(Track, title=title)
+    bio = track.artist.biography
     
     data = {
         'title':track.title,
         'order':track.order,
-        'album':track.album,
+        'album':track.album.title,
         'artist': {
             'name':track.artist.first_name,
             'bio':bio,
