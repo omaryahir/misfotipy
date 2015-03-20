@@ -10,6 +10,16 @@ class UserCreationEmailForm(UserCreationForm):
         model = User
         fields = ("username", "email")
 
+    def clean_email(self):
+        email = self.cleaned_data["email"]
+        
+        try:
+            User.objects.get(email=email)
+        except User.DoesNotExist:
+            return email
+        raise forms.ValidationError(self.error_messages['duplicate_username'], code='duplicate_username')
+
+
 
 class EmailAuthenticationForm(forms.Form):
     email = forms.EmailField()
